@@ -1,13 +1,16 @@
 import React from "react";
+import HomeLayout from "../modules/home-layout/home-layout";
 
-interface layoutProps{
+interface layoutProps {
   children: React.ReactNode;
 }
 
-const layout = ({children}:layoutProps) => {
+const layout = ({ children }: layoutProps) => {
   return (
     <div>
-      {children}
+      <HomeLayout>
+        {children}
+      </HomeLayout>
     </div>
   );
 };

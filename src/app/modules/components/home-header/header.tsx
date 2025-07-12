@@ -1,28 +1,28 @@
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
+import Link from "next/link";
 
-export const Header = () => {
+const Header = () => {
   return (
-    <div className="flex items-center py-4 w-full pl-6">
-      {/* 왼쪽 끝: 로고 */}
-      <div className="w-fit border-2 flex items-center">
-        <Image src="next.svg" alt="Logo" width={100} height={100} />
+    <header className="bg-white/80 backdrop-blur-sm border-b border-orange-100 sticky top-0 z-50">
+      <div className="container mx-auto px-4 py-4">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <Link href="/">
+              <h1 className="text-2xl font-bold text-orange-800">Pet-I</h1>
+            </Link>
+          </div>
+          <div className="flex items-center space-x-3">
+            <Button variant="outline" className="border-orange-200 text-orange-700 hover:bg-orange-50">
+              로그인
+            </Button>
+            <Button className="bg-orange-500 hover:bg-orange-600 text-white">
+              회원가입
+            </Button>
+          </div>
+        </div>
       </div>
-      
-      {/* 가운데: 실시간 반려동물 관리 */}
-      <div className="text-3xl flex-1 text-center">
-        <h1>실시간 반려동물 관리</h1>
-      </div>
-      
-      {/* 화면 오른쪽 끝: 로그인/회원가입 버튼 */}
-      <div className="flex items-center gap-3 pr-6">
-        <Button className="w-15 font-semibold">
-          Sign
-        </Button>
-        <Button className="w-15 font-semibold">
-          Join
-        </Button>
-      </div>
-    </div>
+    </header>
   );
 };
+
+export default Header;

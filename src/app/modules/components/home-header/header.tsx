@@ -8,6 +8,35 @@ import Link from "next/link";
 const Header = () => {
   const { isSignedIn, isLoaded } = useUser();
 
+  // 환경변수 체크 추가
+  const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
+  
+  // Clerk 키가 없으면 간단한 헤더만 렌더링
+  if (!publishableKey) {
+    return (
+      <header className="bg-white/80 backdrop-blur-sm border-b border-orange-100 sticky top-0 z-50">
+        <div className="container mx-auto px-4 py-4">
+          <div className="flex items-center justify-between">
+            <Link href="/" className="flex items-center space-x-2">
+              <Image
+                src="logo.svg"
+                alt="Logo"
+                width={50}
+                height={50}
+                className="object-contain"
+              />
+              <h1 className="text-xl font-semibold pt-6">Pet-I</h1>
+              <p className="pt-2">™</p>
+            </Link>
+            <div className="text-sm text-orange-600">
+              환경설정 중...
+            </div>
+          </div>
+        </div>
+      </header>
+    );
+  }
+
   return (
     <header className="bg-white/80 backdrop-blur-sm border-b border-orange-100 sticky top-0 z-50">
       <div className="container mx-auto px-4 py-4">
@@ -27,16 +56,13 @@ const Header = () => {
           </div>
           <div className="flex items-center space-x-3">
             {!isLoaded ? (
-              // 로딩 중일 때 스켈레톤 UI
               <div className="flex space-x-2">
                 <div className="w-16 h-8 bg-orange-100 rounded animate-pulse"></div>
                 <div className="w-20 h-8 bg-orange-100 rounded animate-pulse"></div>
               </div>
             ) : isSignedIn ? (
-              // 로그인한 사용자: 사용자 버튼 표시
               <UserButton afterSignOutUrl="/" />
             ) : (
-              // 로그인하지 않은 사용자: 로그인/회원가입 버튼 표시
               <>
                 <SignInButton mode="modal">
                   <Button variant="outline" className="border-orange-200 text-orange-700 hover:bg-orange-50">

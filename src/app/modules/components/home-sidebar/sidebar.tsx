@@ -22,7 +22,6 @@ import {
   MapPin,
   Bell,
   Mic,
-  Calendar,
   HelpCircle
 } from "lucide-react";
 

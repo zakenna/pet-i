@@ -3,6 +3,7 @@
 import { SignedOut } from '@clerk/nextjs';
 import React from 'react';
 import Header from '../../home-header/header';
+import Link from 'next/link';
 
 const LogoutPage = () => {
   return (
@@ -88,10 +89,10 @@ const LogoutPage = () => {
         <section className="py-20 px-4 relative overflow-hidden">
           {/* 배경 애니메이션 요소들 */}
           <div className="absolute inset-0 pointer-events-none">
-            <div className="absolute top-20 left-10 w-20 h-20 bg-orange-200 rounded-full opacity-20 animate-bounce" style={{animationDelay: '0s', animationDuration: '3s'}}></div>
-            <div className="absolute top-32 right-20 w-16 h-16 bg-orange-300 rounded-full opacity-30 animate-bounce" style={{animationDelay: '1s', animationDuration: '4s'}}></div>
-            <div className="absolute bottom-20 left-20 w-12 h-12 bg-orange-400 rounded-full opacity-25 animate-bounce" style={{animationDelay: '2s', animationDuration: '3.5s'}}></div>
-            <div className="absolute bottom-32 right-10 w-14 h-14 bg-orange-200 rounded-full opacity-20 animate-bounce" style={{animationDelay: '0.5s', animationDuration: '4.5s'}}></div>
+            <div className="absolute top-20 left-10 w-20 h-20 bg-orange-200 rounded-full opacity-20 animate-bounce" style={{ animationDelay: '0s', animationDuration: '3s' }}></div>
+            <div className="absolute top-32 right-20 w-16 h-16 bg-orange-300 rounded-full opacity-30 animate-bounce" style={{ animationDelay: '1s', animationDuration: '4s' }}></div>
+            <div className="absolute bottom-20 left-20 w-12 h-12 bg-orange-400 rounded-full opacity-25 animate-bounce" style={{ animationDelay: '2s', animationDuration: '3.5s' }}></div>
+            <div className="absolute bottom-32 right-10 w-14 h-14 bg-orange-200 rounded-full opacity-20 animate-bounce" style={{ animationDelay: '0.5s', animationDuration: '4.5s' }}></div>
           </div>
 
           <div className="max-w-4xl mx-auto text-center relative z-10">
@@ -99,7 +100,7 @@ const LogoutPage = () => {
             <h1 className="text-5xl font-bold text-orange-800 mb-6 animate-fade-in-up">
               반려동물 케어 시스템
             </h1>
-            
+
             {/* 서브 제목 - 지연된 페이드인 */}
             <p className="text-xl text-orange-600 mb-8 max-w-2xl mx-auto animate-fade-in-delayed">
               사랑하는 반려동물의 건강과 행복을 위한 종합 관리 플랫폼입니다
@@ -112,18 +113,22 @@ const LogoutPage = () => {
                   <span className="text-3xl animate-bounce-gentle">🐾</span>
                 </div>
                 <div className="absolute -top-2 -right-2 w-6 h-6 bg-orange-300 rounded-full animate-ping opacity-75"></div>
-                <div className="absolute -bottom-2 -left-2 w-4 h-4 bg-orange-500 rounded-full animate-ping opacity-50" style={{animationDelay: '1s'}}></div>
+                <div className="absolute -bottom-2 -left-2 w-4 h-4 bg-orange-500 rounded-full animate-ping opacity-50" style={{ animationDelay: '1s' }}></div>
               </div>
             </div>
-            
+
             {/* 버튼들 - 스케일 애니메이션 */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center animate-scale-in">
-              <button className="bg-orange-600 text-white px-8 py-3 rounded-lg hover:bg-orange-700 hover:scale-105 transition-all duration-300 font-semibold shadow-lg hover:shadow-xl">
-                로그인하기
-              </button>
-              <button className="border-2 border-orange-600 text-orange-600 px-8 py-3 rounded-lg hover:bg-orange-50 hover:scale-105 transition-all duration-300 font-semibold">
-                회원가입
-              </button>
+              <Link href="/sign-in">
+                <button className="bg-orange-600 text-white px-8 py-3 rounded-lg hover:bg-orange-700 hover:scale-105 transition-all duration-300 font-semibold shadow-lg hover:shadow-xl">
+                  로그인하기
+                </button>
+              </Link>
+              <Link href="/sign-up">
+                <button className="border-2 border-orange-600 text-orange-600 px-8 py-3 rounded-lg hover:bg-orange-50 hover:scale-105 transition-all duration-300 font-semibold">
+                  회원가입
+                </button>
+              </Link>
             </div>
           </div>
         </section>

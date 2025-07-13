@@ -1,6 +1,6 @@
 'use client';
 
-import { SignedOut } from '@clerk/nextjs';
+import { SignedOut, SignInButton } from '@clerk/nextjs';
 import React from 'react';
 import Header from '../../home-header/header';
 import Link from 'next/link';
@@ -119,16 +119,14 @@ const LogoutPage = () => {
 
             {/* 버튼들 - 스케일 애니메이션 */}
             <div className="flex flex-col sm:flex-row gap-4 justify-center animate-scale-in">
-              <Link href="/sign-in">
+              <SignInButton mode="modal">
                 <button className="bg-orange-600 text-white px-8 py-3 rounded-lg hover:bg-orange-700 hover:scale-105 transition-all duration-300 font-semibold shadow-lg hover:shadow-xl">
                   로그인하기
                 </button>
-              </Link>
-              <Link href="/sign-up">
-                <button className="border-2 border-orange-600 text-orange-600 px-8 py-3 rounded-lg hover:bg-orange-50 hover:scale-105 transition-all duration-300 font-semibold">
-                  회원가입
-                </button>
-              </Link>
+              </SignInButton>
+              <button className="border-2 border-orange-600 text-orange-600 px-8 py-3 rounded-lg hover:bg-orange-50 hover:scale-105 transition-all duration-300 font-semibold">
+                회원가입
+              </button>
             </div>
           </div>
         </section>
@@ -193,9 +191,11 @@ const LogoutPage = () => {
               <p className="text-orange-600 mb-6">
                 회원가입 후 즉시 모든 기능을 사용할 수 있습니다
               </p>
-              <button className="bg-orange-600 text-white px-8 py-3 rounded-lg hover:bg-orange-700 transition-colors font-semibold">
-                로그인하여 시작하기
-              </button>
+              <SignInButton mode='modal'>
+                <button className="bg-orange-600 text-white px-8 py-3 rounded-lg hover:bg-orange-700 transition-colors font-semibold">
+                  로그인하여 시작하기
+                </button>
+              </SignInButton>
             </div>
           </div>
         </section>

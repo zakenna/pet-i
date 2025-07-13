@@ -14,32 +14,33 @@ const LoginPage = () => {
   return (
     <SignedIn>
       <SidebarProvider>
-        <div className="relative min-h-screen w-full">
-          {/* 사이드바 - 오버레이 방식 */}
-          <div className="fixed left-0 top-0 h-full z-50">
+        <div className="flex min-h-screen w-full">
+          {/* 사이드바 - 반응형 처리 */}
+          <div className="hidden lg:block lg:w-64 lg:flex-shrink-0">
             <SidebarLayout />
           </div>
-          <Header />
-          {/* 메인 콘텐츠 - 사이드바 공간 확보 후 고정 */}
-          <div className="ml-64 mr-64 min-h-screen flex flex-col">
-            {/* 헤더 - 고정 위치 */}
-
-            {/* 메인 콘텐츠 - 고정 크기 */}
-            <main className="flex-1 w-full pl-4 pr-0 py-8">
+          
+          {/* 메인 컨텐츠 영역 */}
+          <div className="flex-1 flex flex-col min-w-0">
+            {/* 헤더 */}
+            <Header />
+            
+            {/* 메인 콘텐츠 */}
+            <main className="flex-1 p-4 lg:p-8 overflow-x-hidden">
               {/* Hero Section */}
-              <div className="w-full pr-4 mb-8">
+              <div className="mb-6 lg:mb-8">
                 <Intro />
               </div>
 
-              {/* Main Dashboard Grid - 고정 크기 */}
-              <div className="w-full pr-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+              {/* Main Dashboard Grid - 반응형 그리드 */}
+              <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-6 mb-6 lg:mb-8">
                 <Voice />
                 <ActivityRecord />
                 <Healthy />
               </div>
 
-              {/* 위치 히스토리 & 알림 시스템 - 고정 크기 */}
-              <div className="w-full pr-4 grid grid-cols-1 lg:grid-cols-2 gap-6">
+              {/* 위치 히스토리 & 알림 시스템 - 반응형 그리드 */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6">
                 <Location />
                 <Notification />
               </div>

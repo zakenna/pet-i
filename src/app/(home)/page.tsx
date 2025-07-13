@@ -1,59 +1,55 @@
 import React from 'react';
-import Intro from '../modules/components/home-contents/intro/intro';
+import { SignedIn } from '@clerk/nextjs';
+import { SidebarProvider } from "@/components/ui/sidebar";
+import LogoutPage from '../modules/components/home-contents/logout/page';
+import Intro from '../modules/components/home-contents/login/intro/intro';
 import Voice from '../modules/components/home-contents/voice/voice';
-import ActivityRecord from '../modules/components/home-contents/activity/activity';
-import Healthy from '../modules/components/home-contents/health/healthy';
-import Location from '../modules/components/home-contents/location/location';
-import Notification from '../modules/components/home-contents/notification/notification';
-import { SignedIn, SignedOut } from '@clerk/nextjs';
+import ActivityRecord from '../modules/components/home-contents/login/activity/activity';
+import Healthy from '../modules/components/home-contents/login/health/healthy';
+import Location from '../modules/components/home-contents/login/location/location';
+import Notification from '../modules/components/home-contents/login/notification/notification';
 import Header from '../modules/components/home-header/header';
+import SidebarLayout from '../modules/components/home-sidebar/sidebar';
 
+
+// ... 기타 컴포넌트 imports
 
 const HomeLayout = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50">
-      <SignedOut>
-        <Header />
-        <div className="min-h-screen flex items-center justify-center">
-          <div className="text-center">
-            <h1 className="text-3xl font-bold text-orange-800 mb-4">
-              반려동물 케어 시스템
-            </h1>
-            <p className="text-orange-600 mb-8">
-              로그인하여 서비스를 이용하세요
-            </p>
-          </div>
-        </div>
-      </SignedOut>
+      {/* 로그아웃 페이지 */}
+      <LogoutPage />
+
+      {/* 로그인 페이지 */}
       <SignedIn>
-        <Header />
-        <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50">
-          <main className="container mx-auto px-4 py-8">
-            {/* Hero Section */}
-            <Intro />
+        {/* SidebarProvider는 최상위에 한 번만 */}
 
-            {/* Main Dashboard Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-              {/* 음성 명령 관리 */}
-              <Voice />
+          <div className="flex">
+            {/* 사이드바 */}
+            
+            {/* 메인 콘텐츠 */}
+            <div className="flex-1">
+              <Header />
+              
+              <main className="container mx-auto px-4 py-8">
+                {/* Hero Section */}
+                <Intro />
 
-              {/* 활동 기록 */}
-              <ActivityRecord />
+                {/* Main Dashboard Grid */}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
+                  <Voice />
+                  <ActivityRecord />
+                  <Healthy />
+                </div>
 
-              {/* 건강 데이터 */}
-              <Healthy />
+                {/* 위치 히스토리 & 알림 시스템 */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                  <Location />
+                  <Notification />
+                </div>
+              </main>
             </div>
-
-            {/* 위치 히스토리 & 알림 시스템 */}
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {/* 위치 히스토리 */}
-              <Location />
-
-              {/* 알림 시스템 */}
-              <Notification />
-            </div>
-          </main>
-        </div>
+          </div>
       </SignedIn>
     </div>
   );

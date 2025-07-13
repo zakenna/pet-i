@@ -3,7 +3,6 @@
 import { Button } from "@/components/ui/button";
 import { SidebarTrigger } from "@/components/ui/sidebar";
 import { SignInButton, SignUpButton, UserButton, useUser } from "@clerk/nextjs";
-import Image from "next/image";
 import Link from "next/link";
 
 const Header = () => {
@@ -15,7 +14,7 @@ const Header = () => {
   // Clerk 키가 없으면 간단한 헤더만 렌더링
   if (!publishableKey) {
     return (
-      <header className="bg-white/80 backdrop-blur-sm border-b border-orange-100 sticky top-0 z-50">
+      <header className="bg-white/80 backdrop-blur-sm border-b border-orange-100 sticky top-0 z-50 max-w-full">
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <Link href="/" className="flex items-center space-x-2">

@@ -137,11 +137,10 @@ const SidebarLayout = () => {
       <SidebarFooter>
         <div className="px-4 py-2">
           <p className="text-xs text-muted-foreground">
-            © 2024 Pet-I. All rights reserved.
+            © 2025 Pet-I. All rights reserved.
           </p>
         </div>
       </SidebarFooter>
-      
       <SidebarRail />
     </Sidebar>
   );

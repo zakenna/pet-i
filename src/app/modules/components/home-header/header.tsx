@@ -1,7 +1,7 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { Sidebar } from "@/components/ui/sidebar";
+import { SidebarTrigger } from "@/components/ui/sidebar";
 import { SignInButton, SignUpButton, UserButton, useUser } from "@clerk/nextjs";
 import Image from "next/image";
 import Link from "next/link";
@@ -19,13 +19,6 @@ const Header = () => {
         <div className="container mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <Link href="/" className="flex items-center space-x-2">
-              <Image
-                src="logo.svg"
-                alt="Logo"
-                width={50}
-                height={50}
-                className="object-contain"
-              />
               <h1 className="text-xl font-semibold pt-6">Pet-I</h1>
               <p className="pt-2">™</p>
             </Link>
@@ -39,22 +32,20 @@ const Header = () => {
   }
 
   return (
-    <header className="bg-white/80 backdrop-blur-sm border-b border-orange-100 sticky top-0 z-50">
-      <div className="container mx-auto px-4 py-4">
+    <header className="bg-white/80 backdrop-blur-sm border-b border-orange-100 sticky top-0 z-50 w-full">
+      <div className="px-6 py-4 w-full">
         <div className="flex items-center justify-between">
-          <div className="flex space-x-3 justify-center">
+          <div className="flex items-center space-x-3">
+            {/* 사이드바 토글 버튼 - 로그인한 사용자만 볼 수 있음 */}
+            {isSignedIn && (
+              <SidebarTrigger className="text-orange-600 hover:text-orange-700" />
+            )}
             <Link href="/" className="flex items-center space-x-2">
-              <Image
-                src="logo.svg"
-                alt="Logo"
-                width={50}
-                height={50}
-                className="object-contain"
-              />
-              <h1 className="text-xl font-semibold pt-6">Pet-I</h1>
-              <p className="pt-2">™</p>
+              <h1 className="text-xl font-semibold">Pet-I</h1>
+              <p className="pb-1.5">™</p>
             </Link>
           </div>
+          
           <div className="flex items-center space-x-3">
             {!isLoaded ? (
               <div className="flex space-x-2">

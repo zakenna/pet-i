@@ -3,7 +3,6 @@
 import { SignedOut, SignInButton } from '@clerk/nextjs';
 import React from 'react';
 import Header from '../../home-header/header';
-import Link from 'next/link';
 
 const LogoutPage = () => {
   return (

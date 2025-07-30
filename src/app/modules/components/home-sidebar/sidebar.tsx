@@ -87,7 +87,7 @@ const SidebarLayout = () => {
             🐾
           </div>
           <div>
-            <p className="text-sm font-medium">Pet-I</p>
+            <p className="text-sm font-medium">Pet-I™</p>
             <p className="text-xs text-muted-foreground">반려동물 관리</p>
           </div>
         </div>

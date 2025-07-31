@@ -3,7 +3,7 @@ import { SignedIn } from '@clerk/nextjs';
 import React from 'react';
 import SidebarLayout from '../../home-sidebar/sidebar';
 import Header from '../../home-header/header';
-import Voice from '../voice/voice';
+import Voice from './voice/voice';
 import Intro from './intro/intro';
 import Healthy from './health/healthy';
 import ActivityRecord from './activity/activity';

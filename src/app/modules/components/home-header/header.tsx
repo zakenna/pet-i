@@ -10,7 +10,7 @@ const Header = () => {
 
   // 환경변수 체크 추가
   const publishableKey = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
-  
+
   // Clerk 키가 없으면 간단한 헤더만 렌더링
   if (!publishableKey) {
     return (
@@ -44,7 +44,7 @@ const Header = () => {
               <p className="pb-1.5">™</p>
             </Link>
           </div>
-          
+
           <div className="flex items-center space-x-3">
             {!isLoaded ? (
               <div className="flex space-x-2">
@@ -61,9 +61,11 @@ const Header = () => {
                   </Button>
                 </SignInButton>
                 <SignUpButton mode="modal">
-                  <Button size="sm" className="bg-orange-500 hover:bg-orange-600 text-white">
-                    회원가입
-                  </Button>
+                  <Link href="/pets/register">
+                    <Button size="sm" className="bg-orange-500 hover:bg-orange-600 text-white">
+                      회원가입
+                    </Button>
+                  </Link>
                 </SignUpButton>
               </>
             )}

@@ -60,12 +60,10 @@ const Header = () => {
                     로그인
                   </Button>
                 </SignInButton>
-                <SignUpButton mode="modal">
-                  <Link href="/pets/register">
+                <SignUpButton mode="modal" forceRedirectUrl="/api/register">
                     <Button size="sm" className="bg-orange-500 hover:bg-orange-600 text-white">
                       회원가입
                     </Button>
-                  </Link>
                 </SignUpButton>
               </>
             )}

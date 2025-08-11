@@ -81,7 +81,7 @@ const PetRegisterPage = () => {
 
       console.log('전송할 데이터:', submitData); // 디버깅용
 
-      const response = await fetch('/pets/api', {
+      const response = await fetch('/api/pets', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

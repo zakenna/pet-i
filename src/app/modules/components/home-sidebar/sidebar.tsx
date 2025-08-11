@@ -63,7 +63,7 @@ const menuItems = [
 const settingsItems = [
   {
     title: "프로필",
-    url: "/profile",
+    url: "/setting/profile",
     icon: User,
   },
   {
@@ -73,7 +73,7 @@ const settingsItems = [
   },
   {
     title: "도움말",
-    url: "/help",
+    url: "/setting/help",
     icon: HelpCircle,
   },
 ];

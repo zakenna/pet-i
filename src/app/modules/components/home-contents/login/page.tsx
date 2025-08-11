@@ -19,12 +19,12 @@ const LoginPage = () => {
           <div className="hidden lg:block lg:w-64 lg:flex-shrink-0">
             <SidebarLayout />
           </div>
-          
+
           {/* 메인 컨텐츠 영역 */}
           <div className="flex-1 flex flex-col min-w-0">
             {/* 헤더 */}
             <Header />
-            
+
             {/* 메인 콘텐츠 */}
             <main className="flex-1 p-4 lg:p-8 overflow-x-hidden">
               {/* Hero Section */}

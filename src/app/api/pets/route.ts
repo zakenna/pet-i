@@ -41,7 +41,7 @@ export async function GET() {
 // POST: 새 반려동물 등록
 export async function POST(request: NextRequest) {
   try {
-    console.log('🐾 POST /pets/api 요청 받음');
+    console.log('🐾 POST /api/pets 요청 받음');
 
     const clerkUser = await currentUser();
 

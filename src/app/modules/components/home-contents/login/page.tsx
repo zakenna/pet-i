@@ -14,19 +14,19 @@ const LoginPage = () => {
   return (
     <SignedIn>
       <SidebarProvider>
-        <div className="flex min-h-screen w-full">
-          {/* 사이드바 - 반응형 처리 */}
-          <div className="hidden lg:block lg:w-64 lg:flex-shrink-0">
-            <SidebarLayout />
-          </div>
+        <div className="min-h-screen w-full flex flex-col">
+          {/* 헤더 - 전체 상단에 배치 */}
+          <Header />
 
-          {/* 메인 컨텐츠 영역 */}
-          <div className="flex-1 flex flex-col min-w-0">
-            {/* 헤더 */}
-            <Header />
+          {/* 헤더 아래 사이드바와 메인 컨텐츠 영역 */}
+          <div className="flex flex-1">
+            {/* 사이드바 - 헤더 아래 왼쪽에 배치 */}
+            <div className="flex-shrink-0">
+              <SidebarLayout />
+            </div>
 
-            {/* 메인 콘텐츠 */}
-            <main className="flex-1 p-4 lg:p-8 overflow-x-hidden">
+            {/* 메인 컨텐츠 영역 - 사이드바 옆에 배치 */}
+            <main className="flex-1 p-4 lg:p-8 overflow-x-hidden min-w-0">
               {/* Hero Section */}
               <div className="mb-6 lg:mb-8">
                 <Intro />

@@ -6,6 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { ArrowLeft, Heart, CalendarDays, Scale, MapPin, User, Edit, Trash2, PlusCircle } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 import { useUser } from '@clerk/nextjs';
 
 // 펫 데이터 타입
@@ -74,6 +75,8 @@ const PetCard: React.FC<{ pet: Pet; onEdit?: (pet: Pet) => void; onDelete?: (pet
   onEdit, 
   onDelete 
 }) => {
+  const [imageError, setImageError] = useState(false);
+
   return (
     <Card className="bg-white/80 backdrop-blur-sm border-orange-100 shadow-lg hover:shadow-xl transition-all duration-300">
       <CardHeader className="pb-3">
@@ -113,14 +116,14 @@ const PetCard: React.FC<{ pet: Pet; onEdit?: (pet: Pet) => void; onDelete?: (pet
         {/* 프로필 이미지 */}
         <div className="flex justify-center">
           <div className="relative w-32 h-32 rounded-full overflow-hidden bg-orange-50 border-4 border-orange-200">
-            {pet.profileImage ? (
-              <img
+            {pet.profileImage && !imageError ? (
+              <Image
                 src={pet.profileImage}
                 alt={`${pet.name}의 프로필`}
-                className="w-full h-full object-cover"
-                onError={(e) => {
-                  e.currentTarget.style.display = 'none';
-                }}
+                fill
+                className="object-cover"
+                sizes="128px"
+                onError={() => setImageError(true)}
               />
             ) : (
               <div className="w-full h-full flex items-center justify-center text-orange-300">
@@ -249,6 +252,7 @@ const ProfilePage: React.FC = () => {
   const [pets, setPets] = useState<Pet[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [userImageError, setUserImageError] = useState(false);
 
   // 펫 데이터 가져오기
   const fetchPets = async () => {
@@ -338,7 +342,7 @@ const ProfilePage: React.FC = () => {
               </Button>
             </Link>
             <h1 className="text-2xl font-bold text-orange-800">내 반려동물</h1>
-            <Link href="/api/register">
+            <Link href="/register">
               <Button className="bg-orange-500 hover:bg-orange-600">
                 <PlusCircle className="mr-2 h-4 w-4" />
                 새 반려동물 등록
@@ -361,12 +365,15 @@ const ProfilePage: React.FC = () => {
               </CardHeader>
               <CardContent>
                 <div className="flex items-center space-x-4">
-                  <div className="w-16 h-16 rounded-full overflow-hidden bg-orange-100">
-                    {user.imageUrl ? (
-                      <img
+                  <div className="relative w-16 h-16 rounded-full overflow-hidden bg-orange-100">
+                    {user.imageUrl && !userImageError ? (
+                      <Image
                         src={user.imageUrl}
                         alt="프로필"
-                        className="w-full h-full object-cover"
+                        fill
+                        className="object-cover"
+                        sizes="64px"
+                        onError={() => setUserImageError(true)}
                       />
                     ) : (
                       <div className="w-full h-full flex items-center justify-center text-orange-400">
@@ -439,7 +446,7 @@ const ProfilePage: React.FC = () => {
                 <p className="text-orange-500 mb-6">
                   첫 번째 가족을 등록해보세요!
                 </p>
-                <Link href="/api/register">
+                <Link href="/register">
                   <Button className="bg-orange-500 hover:bg-orange-600">
                     <PlusCircle className="mr-2 h-4 w-4" />
                     반려동물 등록하기

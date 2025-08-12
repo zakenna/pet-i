@@ -20,8 +20,6 @@ import {
   User,
   Heart,
   Activity,
-  MapPin,
-  Bell,
   Mic,
   HelpCircle,
   PlusCircle
@@ -37,7 +35,7 @@ const menuItems = [
   },
   {
     title: "반려동물 등록",
-    url: "/api/register",
+    url: "/register", // 페이지 경로로 변경
     icon: PlusCircle,
   },
   {
@@ -54,17 +52,7 @@ const menuItems = [
     title: "건강 관리",
     url: "/health",
     icon: Heart,
-  },
-  {
-    title: "위치 정보",
-    url: "/location",
-    icon: MapPin,
-  },
-  {
-    title: "알림",
-    url: "/notifications",
-    icon: Bell,
-  },
+  }
 ];
 
 // 설정 메뉴들
@@ -94,27 +82,33 @@ const SidebarLayout = () => {
     <Sidebar 
       collapsible="icon"
       className={`
-        border-r border-orange-100 bg-white/80 backdrop-blur-sm transition-all duration-300 ease-in-out
+        border-r border-orange-200/30 bg-gradient-to-b from-slate-50 via-blue-50/30 to-indigo-50/40 backdrop-blur-sm transition-all duration-300 ease-in-out shadow-lg
         ${isCollapsed ? 'w-16' : 'w-64'}
+        h-screen flex-shrink-0
       `}
     >
-      {/* 헤더 - 헤더와 정확히 같은 높이 */}
-      <SidebarHeader className="h-[64px] border-b border-orange-100 bg-white/50 flex items-center justify-center">
-        <div className={`flex items-center w-full ${isCollapsed ? 'justify-center' : 'gap-2 px-4'}`}>
+      {/* 헤더 - 브랜딩 영역 (헤더 높이만큼 여백 추가) */}
+      <SidebarHeader className="border-b border-slate-200/50 bg-gradient-to-r from-slate-100/80 to-blue-100/60 pt-20 pb-4 backdrop-blur-sm">
+        <div className={`flex items-center w-full ${isCollapsed ? 'justify-center px-4' : 'gap-2 px-4'}`}>
           {!isCollapsed && (
             <div className="min-w-0 flex-1">
-              <p className="text-sm font-medium text-orange-800 truncate">Pet-I™</p>
-              <p className="text-xs text-orange-600 truncate">반려동물 관리</p>
+              <p className="text-sm font-medium text-slate-700 truncate">대시보드</p>
+              <p className="text-xs text-slate-500 truncate">반려동물 관리</p>
+            </div>
+          )}
+          {isCollapsed && (
+            <div className="w-8 h-8 bg-gradient-to-br from-blue-200 to-indigo-300 rounded-full flex items-center justify-center shadow-sm">
+              <Home className="h-4 w-4 text-slate-600" />
             </div>
           )}
         </div>
       </SidebarHeader>
       
-      <SidebarContent className="bg-white/30">
+      <SidebarContent className="bg-gradient-to-b from-transparent via-slate-50/20 to-blue-50/30">
         {/* 메인 메뉴 */}
         <SidebarGroup>
           {!isCollapsed && (
-            <SidebarGroupLabel className="text-orange-700 font-medium px-4 py-2">
+            <SidebarGroupLabel className="text-slate-600 font-medium px-4 py-2">
               메인 메뉴
             </SidebarGroupLabel>
           )}
@@ -124,7 +118,7 @@ const SidebarLayout = () => {
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton 
                     asChild
-                    className="hover:bg-orange-50 hover:text-orange-700 transition-colors group"
+                    className="hover:bg-blue-50/50 hover:text-slate-700 transition-colors group"
                     tooltip={isCollapsed ? item.title : undefined}
                   >
                     <Link 
@@ -137,8 +131,8 @@ const SidebarLayout = () => {
                         }
                       `}
                     >
-                      <item.icon className="h-4 w-4 flex-shrink-0 group-hover:text-orange-600" />
-                      {!isCollapsed && <span className="truncate">{item.title}</span>}
+                      <item.icon className="h-4 w-4 flex-shrink-0 group-hover:text-blue-600 text-slate-600" />
+                      {!isCollapsed && <span className="truncate text-slate-700">{item.title}</span>}
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -150,7 +144,7 @@ const SidebarLayout = () => {
         {/* 설정 메뉴 */}
         <SidebarGroup>
           {!isCollapsed && (
-            <SidebarGroupLabel className="text-orange-700 font-medium px-4 py-2">
+            <SidebarGroupLabel className="text-slate-600 font-medium px-4 py-2">
               설정
             </SidebarGroupLabel>
           )}
@@ -160,7 +154,7 @@ const SidebarLayout = () => {
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton 
                     asChild
-                    className="hover:bg-orange-50 hover:text-orange-700 transition-colors group"
+                    className="hover:bg-blue-50/50 hover:text-slate-700 transition-colors group"
                     tooltip={isCollapsed ? item.title : undefined}
                   >
                     <Link 
@@ -173,8 +167,8 @@ const SidebarLayout = () => {
                         }
                       `}
                     >
-                      <item.icon className="h-4 w-4 flex-shrink-0 group-hover:text-orange-600" />
-                      {!isCollapsed && <span className="truncate">{item.title}</span>}
+                      <item.icon className="h-4 w-4 flex-shrink-0 group-hover:text-blue-600 text-slate-600" />
+                      {!isCollapsed && <span className="truncate text-slate-700">{item.title}</span>}
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -184,10 +178,10 @@ const SidebarLayout = () => {
         </SidebarGroup>
       </SidebarContent>
       
-      <SidebarFooter className="border-t border-orange-100 bg-white/50">
+      <SidebarFooter className="border-t border-slate-200/50 bg-gradient-to-r from-slate-100/60 to-blue-100/40 backdrop-blur-sm">
         <div className="px-4 py-3">
           {!isCollapsed && (
-            <p className="text-xs text-orange-500 text-center">
+            <p className="text-xs text-slate-400 text-center">
               © 2025 Pet-I. All rights reserved.
             </p>
           )}

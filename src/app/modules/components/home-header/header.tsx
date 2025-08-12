@@ -31,14 +31,14 @@ const Header = () => {
   // Clerk 키가 없으면 간단한 헤더만 렌더링
   if (!publishableKey) {
     return (
-      <header className="h-[64px] bg-white/80 backdrop-blur-sm border-b border-orange-100 sticky top-0 z-50 w-full flex items-center">
+      <header className="h-[64px] bg-gradient-to-r from-slate-50 via-blue-50 to-indigo-50 backdrop-blur-sm border-b border-slate-200/50 sticky top-0 z-50 w-full flex items-center shadow-sm">
         <div className="px-4 w-full">
           <div className="flex items-center justify-between">
             <Link href="/" className="flex items-center space-x-2">
-              <h1 className="text-xl font-semibold">Pet-I</h1>
-              <p>™</p>
+              <h1 className="text-xl font-semibold text-slate-700">Pet-I</h1>
+              <p className="text-slate-500">™</p>
             </Link>
-            <div className="text-sm text-orange-600">
+            <div className="text-sm text-slate-600">
               환경설정 중...
             </div>
           </div>
@@ -50,31 +50,31 @@ const Header = () => {
   // 로그인하지 않은 상태에서는 사이드바 기능 없는 헤더
   if (!isLoaded || !isSignedIn) {
     return (
-      <header className="h-[64px] bg-white/80 backdrop-blur-sm border-b border-orange-100 sticky top-0 z-40 w-full flex items-center">
+      <header className="h-[64px] bg-gradient-to-r from-slate-50 via-blue-50 to-indigo-50 backdrop-blur-sm border-b border-slate-200/50 sticky top-0 z-50 w-full flex items-center shadow-sm">
         <div className="px-4 lg:px-6 w-full">
           <div className="flex items-center justify-between">
             <div className="flex items-center space-x-3">
               <Link href="/" className="flex items-center space-x-2">
-                <h1 className="text-lg lg:text-xl font-semibold text-orange-800">Pet-I</h1>
-                <p className="pb-1.5 text-orange-600">™</p>
+                <h1 className="text-lg lg:text-xl font-semibold text-slate-700">Pet-I</h1>
+                <p className="pb-1.5 text-slate-500">™</p>
               </Link>
             </div>
 
             <div className="flex items-center space-x-3">
               {!isLoaded ? (
                 <div className="flex space-x-2">
-                  <div className="w-16 h-8 bg-orange-100 rounded animate-pulse"></div>
-                  <div className="w-20 h-8 bg-orange-100 rounded animate-pulse"></div>
+                  <div className="w-16 h-8 bg-slate-200 rounded animate-pulse"></div>
+                  <div className="w-20 h-8 bg-slate-200 rounded animate-pulse"></div>
                 </div>
               ) : (
                 <>
                   <SignInButton mode="modal">
-                    <Button variant="outline" size="sm" className="border-orange-200 text-orange-700 hover:bg-orange-50">
+                    <Button variant="outline" size="sm" className="border-slate-300 text-slate-600 hover:bg-slate-100">
                       로그인
                     </Button>
                   </SignInButton>
                   <SignUpButton mode="modal" forceRedirectUrl="/api/register">
-                    <Button size="sm" className="bg-orange-500 hover:bg-orange-600 text-white">
+                    <Button size="sm" className="bg-blue-500 hover:bg-blue-600 text-white">
                       회원가입
                     </Button>
                   </SignUpButton>
@@ -87,9 +87,9 @@ const Header = () => {
     );
   }
 
-  // 로그인한 상태 헤더
+  // 로그인한 상태 헤더 - 전체 너비
   return (
-    <header className="h-[64px] bg-white/80 backdrop-blur-sm border-b border-orange-100 sticky top-0 z-40 w-full flex items-center">
+    <header className="h-[64px] bg-gradient-to-r from-slate-50 via-blue-50 to-indigo-50 backdrop-blur-sm border-b border-slate-200/50 sticky top-0 z-50 w-full flex items-center shadow-sm">
       <div className="px-4 lg:px-6 w-full">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-3">
@@ -122,10 +122,10 @@ const Header = () => {
               appearance={{
                 elements: {
                   avatarBox: "w-8 h-8",
-                  userButtonPopoverCard: "shadow-lg border-orange-100",
-                  userButtonPopoverActionButton: "hover:bg-orange-50",
-                  userButtonPopoverActionButtonText: "text-orange-700",
-                  userButtonPopoverActionButtonIcon: "text-orange-600"
+                  userButtonPopoverCard: "shadow-lg border-slate-200",
+                  userButtonPopoverActionButton: "hover:bg-slate-50",
+                  userButtonPopoverActionButtonText: "text-slate-700",
+                  userButtonPopoverActionButtonIcon: "text-slate-600"
                 }
               }}
             />

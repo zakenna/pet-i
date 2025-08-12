@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { currentUser } from '@clerk/nextjs/server';
-import { db } from '@/app/db';
 import { petQueries, userQueries } from '@/app/db/utils';
 
 // GET: 사용자의 모든 반려동물 조회

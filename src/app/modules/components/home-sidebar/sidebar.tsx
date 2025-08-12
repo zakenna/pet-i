@@ -12,6 +12,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
+  useSidebar,
 } from "@/components/ui/sidebar";
 import { 
   Home,
@@ -22,8 +23,10 @@ import {
   MapPin,
   Bell,
   Mic,
-  HelpCircle
+  HelpCircle,
+  PlusCircle
 } from "lucide-react";
+import Link from "next/link";
 
 // 메뉴 아이템들을 정의
 const menuItems = [
@@ -31,6 +34,11 @@ const menuItems = [
     title: "홈",
     url: "/",
     icon: Home,
+  },
+  {
+    title: "반려동물 등록",
+    url: "/api/register",
+    icon: PlusCircle,
   },
   {
     title: "음성 기록",
@@ -79,33 +87,60 @@ const settingsItems = [
 ];
 
 const SidebarLayout = () => {
+  const { state } = useSidebar();
+  const isCollapsed = state === "collapsed";
+
   return (
-    <Sidebar>
-      <SidebarHeader>
-        <div className="flex items-center gap-2 px-4 py-2">
-          <div className="flex h-8 w-8 items-center justify-center rounded-md bg-orange-500 text-white">
-            🐾
-          </div>
-          <div>
-            <p className="text-sm font-medium">Pet-I™</p>
-            <p className="text-xs text-muted-foreground">반려동물 관리</p>
-          </div>
+    <Sidebar 
+      collapsible="icon"
+      className={`
+        border-r border-orange-100 bg-white/80 backdrop-blur-sm transition-all duration-300 ease-in-out
+        ${isCollapsed ? 'w-16' : 'w-64'}
+      `}
+    >
+      {/* 헤더 - 헤더와 정확히 같은 높이 */}
+      <SidebarHeader className="h-[64px] border-b border-orange-100 bg-white/50 flex items-center justify-center">
+        <div className={`flex items-center w-full ${isCollapsed ? 'justify-center' : 'gap-2 px-4'}`}>
+          
+          {!isCollapsed && (
+            <div className="min-w-0 flex-1">
+              <p className="text-sm font-medium text-orange-800 truncate">Pet-I™</p>
+              <p className="text-xs text-orange-600 truncate">반려동물 관리</p>
+            </div>
+          )}
         </div>
       </SidebarHeader>
       
-      <SidebarContent>
+      <SidebarContent className="bg-white/30">
         {/* 메인 메뉴 */}
         <SidebarGroup>
-          <SidebarGroupLabel>메인 메뉴</SidebarGroupLabel>
+          {!isCollapsed && (
+            <SidebarGroupLabel className="text-orange-700 font-medium px-4 py-2">
+              메인 메뉴
+            </SidebarGroupLabel>
+          )}
           <SidebarGroupContent>
             <SidebarMenu>
               {menuItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <a href={item.url}>
-                      <item.icon className="h-4 w-4" />
-                      <span>{item.title}</span>
-                    </a>
+                  <SidebarMenuButton 
+                    asChild
+                    className="hover:bg-orange-50 hover:text-orange-700 transition-colors group"
+                    tooltip={isCollapsed ? item.title : undefined}
+                  >
+                    <Link 
+                      href={item.url} 
+                      className={`
+                        flex items-center py-2 rounded-md
+                        ${isCollapsed 
+                          ? 'justify-center mx-auto h-10 w-10' 
+                          : 'gap-3 px-3 mx-2'
+                        }
+                      `}
+                    >
+                      <item.icon className="h-4 w-4 flex-shrink-0 group-hover:text-orange-600" />
+                      {!isCollapsed && <span className="truncate">{item.title}</span>}
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
@@ -115,16 +150,33 @@ const SidebarLayout = () => {
 
         {/* 설정 메뉴 */}
         <SidebarGroup>
-          <SidebarGroupLabel>설정</SidebarGroupLabel>
+          {!isCollapsed && (
+            <SidebarGroupLabel className="text-orange-700 font-medium px-4 py-2">
+              설정
+            </SidebarGroupLabel>
+          )}
           <SidebarGroupContent>
             <SidebarMenu>
               {settingsItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <a href={item.url}>
-                      <item.icon className="h-4 w-4" />
-                      <span>{item.title}</span>
-                    </a>
+                  <SidebarMenuButton 
+                    asChild
+                    className="hover:bg-orange-50 hover:text-orange-700 transition-colors group"
+                    tooltip={isCollapsed ? item.title : undefined}
+                  >
+                    <Link 
+                      href={item.url} 
+                      className={`
+                        flex items-center py-2 rounded-md
+                        ${isCollapsed 
+                          ? 'justify-center mx-auto h-10 w-10' 
+                          : 'gap-3 px-3 mx-2'
+                        }
+                      `}
+                    >
+                      <item.icon className="h-4 w-4 flex-shrink-0 group-hover:text-orange-600" />
+                      {!isCollapsed && <span className="truncate">{item.title}</span>}
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
@@ -133,11 +185,13 @@ const SidebarLayout = () => {
         </SidebarGroup>
       </SidebarContent>
       
-      <SidebarFooter>
-        <div className="px-4 py-2">
-          <p className="text-xs text-muted-foreground">
-            © 2025 Pet-I. All rights reserved.
-          </p>
+      <SidebarFooter className="border-t border-orange-100 bg-white/50">
+        <div className="px-4 py-3">
+          {!isCollapsed && (
+            <p className="text-xs text-orange-500 text-center">
+              © 2025 Pet-I. All rights reserved.
+            </p>
+          )}
         </div>
       </SidebarFooter>
       <SidebarRail />

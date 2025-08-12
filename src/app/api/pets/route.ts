@@ -78,20 +78,35 @@ export async function POST(request: NextRequest) {
 
     console.log('✅ DB 사용자 정보:', { id: dbUser.id, email: dbUser.email });
 
-    // 반려동물 데이터 준비
+    // 반려동물 데이터 준비 (타입 호환성 보장)
     const petData = {
-      name: body.name,
-      type: body.type, // enum에 맞는 값인지 확인 필요
-      breed: body.breed || null,
-      gender: body.gender || null,
-      birthDate: body.birthDate ? new Date(body.birthDate) : null,
-      weight: body.weight ? parseFloat(body.weight) : null,
-      color: body.color || null,
-      microchipId: body.microchipId || null,
-      profileImage: body.profileImage || null,
-      // isActive는 기본 true라서 생략 가능
+      name: String(body.name || '').trim(),
+      type: body.type, // enum 값은 이미 검증됨
+      breed: body.breed && typeof body.breed === 'string' ? body.breed.trim() : null,
+      gender: body.gender && typeof body.gender === 'string' ? body.gender : null,
+      birthDate: body.birthDate && typeof body.birthDate === 'string' 
+        ? new Date(body.birthDate) 
+        : null,
+      weight: body.weight && (typeof body.weight === 'string' || typeof body.weight === 'number')
+        ? String(parseFloat(String(body.weight))) // DB 스키마에 맞게 string으로 변환
+        : null,
+      color: body.color && typeof body.color === 'string' ? body.color.trim() : null,
+      microchipId: body.microchipId && typeof body.microchipId === 'string' 
+        ? body.microchipId.trim() 
+        : null,
+      profileImage: body.profileImage && typeof body.profileImage === 'string' 
+        ? body.profileImage.trim() 
+        : null,
     };
 
+    // 데이터 유효성 검증
+    if (petData.birthDate && isNaN(petData.birthDate.getTime())) {
+      petData.birthDate = null;
+    }
+    
+    if (petData.weight && isNaN(parseFloat(petData.weight))) {
+      petData.weight = null;
+    }
 
     console.log('🐕 반려동물 데이터 준비:', petData);
 

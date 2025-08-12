@@ -101,7 +101,6 @@ const SidebarLayout = () => {
       {/* 헤더 - 헤더와 정확히 같은 높이 */}
       <SidebarHeader className="h-[64px] border-b border-orange-100 bg-white/50 flex items-center justify-center">
         <div className={`flex items-center w-full ${isCollapsed ? 'justify-center' : 'gap-2 px-4'}`}>
-          
           {!isCollapsed && (
             <div className="min-w-0 flex-1">
               <p className="text-sm font-medium text-orange-800 truncate">Pet-I™</p>

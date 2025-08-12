@@ -14,17 +14,19 @@ const LoginPage = () => {
   return (
     <SignedIn>
       <SidebarProvider>
-        <div className="min-h-screen w-full">
-          {/* 헤더가 화면 전체 너비를 차지하도록 먼저 배치 */}
-          <Header />
-          
-          {/* 사이드바와 메인 컨텐츠 영역 */}
-          <div className="flex">
-            {/* 사이드바 영역 */}
+        <div className="flex min-h-screen w-full">
+          {/* 사이드바 - 반응형 처리 */}
+          <div className="hidden lg:block lg:w-64 lg:flex-shrink-0">
             <SidebarLayout />
+          </div>
 
-            {/* 메인 컨텐츠 영역 - 사이드바가 차지하지 않는 나머지 공간을 모두 차지 */}
-            <main className="flex-1 p-4 lg:p-8 overflow-x-hidden min-w-0">
+          {/* 메인 컨텐츠 영역 */}
+          <div className="flex-1 flex flex-col min-w-0">
+            {/* 헤더 */}
+            <Header />
+
+            {/* 메인 콘텐츠 */}
+            <main className="flex-1 p-4 lg:p-8 overflow-x-hidden">
               {/* Hero Section */}
               <div className="mb-6 lg:mb-8">
                 <Intro />

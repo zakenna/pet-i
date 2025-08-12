@@ -289,8 +289,10 @@ const ProfilePage: React.FC = () => {
     if (!confirm('정말로 이 반려동물 정보를 삭제하시겠습니까?')) return;
     
     try {
-      // DELETE API 구현 필요
-      alert('삭제 기능은 준비 중입니다.');
+      // 실제 삭제 API 구현하거나 임시로 petId 사용
+      console.log('삭제할 반려동물 ID:', petId);
+      // TODO: DELETE /api/pets/${petId} 구현 예정
+      alert(`반려동물 ID ${petId} 삭제 기능은 준비 중입니다.`);
     } catch (error) {
       console.error('펫 삭제 실패:', error);
       alert('삭제 중 오류가 발생했습니다.');

@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { PlusCircle, Save, ArrowLeft, Heart } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import Image from 'next/image';
 import { SignedIn, SignedOut, SignInButton } from '@clerk/nextjs';
 
 interface PetFormData {
@@ -26,6 +27,7 @@ interface PetFormData {
 const PetRegisterPage = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [imageError, setImageError] = useState(false);
   const [formData, setFormData] = useState<PetFormData>({
     name: '',
     type: '',
@@ -60,6 +62,11 @@ const PetRegisterPage = () => {
       ...prev,
       [field]: value,
     }));
+    
+    // 프로필 이미지 URL이 변경되면 에러 상태 초기화
+    if (field === 'profileImage') {
+      setImageError(false);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -326,21 +333,34 @@ const PetRegisterPage = () => {
                     />
                   </div>
                   
-                  {/* 이미지 미리보기 */}
-                  {formData.profileImage && (
+                  {/* 이미지 미리보기 - Next.js Image 컴포넌트 사용 */}
+                  {formData.profileImage && !imageError && (
                     <div className="flex justify-center">
                       <div className="relative">
-                        <img
-                          src={formData.profileImage}
-                          alt="프로필 미리보기"
-                          className="w-32 h-32 rounded-full object-cover border-4 border-orange-200 shadow-lg"
-                          onError={(e) => {
-                            e.currentTarget.style.display = 'none';
-                          }}
-                        />
+                        <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-orange-200 shadow-lg relative">
+                          <Image
+                            src={formData.profileImage}
+                            alt="프로필 미리보기"
+                            fill
+                            className="object-cover"
+                            sizes="128px"
+                            onError={() => setImageError(true)}
+                          />
+                        </div>
                         <div className="absolute -bottom-2 -right-2 bg-orange-500 text-white rounded-full p-1">
                           ✓
                         </div>
+                      </div>
+                    </div>
+                  )}
+                  
+                  {/* 이미지 로드 에러 시 표시 */}
+                  {formData.profileImage && imageError && (
+                    <div className="flex justify-center">
+                      <div className="w-32 h-32 rounded-full border-4 border-red-200 bg-red-50 flex items-center justify-center">
+                        <p className="text-red-500 text-xs text-center">
+                          이미지를 불러올 수 없습니다
+                        </p>
                       </div>
                     </div>
                   )}

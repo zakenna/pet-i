@@ -69,6 +69,20 @@ const formatWeight = (weight: string | null) => {
   return `${parseFloat(weight)}kg`;
 };
 
+// 이미지 소스 검증 함수
+const isValidImageSrc = (src: string | null): boolean => {
+  if (!src) return false;
+  // Base64 이미지 데이터 확인
+  if (src.startsWith('data:image/')) return true;
+  // 일반 URL 확인
+  try {
+    new URL(src);
+    return true;
+  } catch {
+    return false;
+  }
+};
+
 // 펫 카드 컴포넌트
 const PetCard: React.FC<{ pet: Pet; onEdit?: (pet: Pet) => void; onDelete?: (petId: string) => void }> = ({ 
   pet, 
@@ -76,6 +90,7 @@ const PetCard: React.FC<{ pet: Pet; onEdit?: (pet: Pet) => void; onDelete?: (pet
   onDelete 
 }) => {
   const [imageError, setImageError] = useState(false);
+  const hasValidImage = isValidImageSrc(pet.profileImage) && !imageError;
 
   return (
     <Card className="bg-white/80 backdrop-blur-sm border-orange-100 shadow-lg hover:shadow-xl transition-all duration-300">
@@ -116,14 +131,15 @@ const PetCard: React.FC<{ pet: Pet; onEdit?: (pet: Pet) => void; onDelete?: (pet
         {/* 프로필 이미지 */}
         <div className="flex justify-center">
           <div className="relative w-32 h-32 rounded-full overflow-hidden bg-orange-50 border-4 border-orange-200">
-            {pet.profileImage && !imageError ? (
+            {hasValidImage ? (
               <Image
-                src={pet.profileImage}
+                src={pet.profileImage!}
                 alt={`${pet.name}의 프로필`}
                 fill
                 className="object-cover"
                 sizes="128px"
                 onError={() => setImageError(true)}
+                unoptimized={true} // 모든 이미지 최적화 비활성화 (Base64 호환성)
               />
             ) : (
               <div className="w-full h-full flex items-center justify-center text-orange-300">
@@ -161,8 +177,8 @@ const PetCard: React.FC<{ pet: Pet; onEdit?: (pet: Pet) => void; onDelete?: (pet
           {pet.color && (
             <div className="flex items-center justify-center gap-2 text-sm text-orange-600">
               <div 
-                className="w-4 h-4 rounded-full border border-orange-300"
-                style={{ backgroundColor: pet.color.toLowerCase() }}
+                className="w-4 h-4 rounded-full border border-orange-300 bg-orange-100"
+                title={`색상: ${pet.color}`}
               />
               <span>{pet.color}</span>
             </div>
@@ -204,7 +220,7 @@ const PetCard: React.FC<{ pet: Pet; onEdit?: (pet: Pet) => void; onDelete?: (pet
                 <MapPin size={16} />
                 <span>마이크로칩</span>
               </div>
-              <div className="text-xs font-mono text-orange-800">
+              <div className="text-xs font-mono text-orange-800 break-all">
                 {pet.microchipId}
               </div>
             </div>
@@ -216,6 +232,11 @@ const PetCard: React.FC<{ pet: Pet; onEdit?: (pet: Pet) => void; onDelete?: (pet
           <div className="text-xs text-orange-500">
             등록일: {new Date(pet.createdAt).toLocaleDateString('ko-KR')}
           </div>
+          {pet.profileImage?.startsWith('data:image/') && (
+            <div className="text-xs text-orange-400 mt-1">
+              📷 업로드된 사진
+            </div>
+          )}
         </div>
       </CardContent>
     </Card>
@@ -258,6 +279,7 @@ const ProfilePage: React.FC = () => {
   const fetchPets = async () => {
     try {
       setIsLoading(true);
+      setError(null);
       const response = await fetch('/api/pets');
       const data = await response.json();
       
@@ -290,13 +312,24 @@ const ProfilePage: React.FC = () => {
 
   // 펫 삭제 핸들러
   const handleDelete = async (petId: string) => {
-    if (!confirm('정말로 이 반려동물 정보를 삭제하시겠습니까?')) return;
+    const petToDelete = pets.find(pet => pet.id === petId);
+    const petName = petToDelete?.name || '반려동물';
+    
+    if (!confirm(`정말로 ${petName}의 정보를 삭제하시겠습니까?`)) return;
     
     try {
-      // 실제 삭제 API 구현하거나 임시로 petId 사용
+      // TODO: 실제 삭제 API 구현 예정
       console.log('삭제할 반려동물 ID:', petId);
-      // TODO: DELETE /api/pets/${petId} 구현 예정
-      alert(`반려동물 ID ${petId} 삭제 기능은 준비 중입니다.`);
+      alert(`${petName} 삭제 기능은 준비 중입니다.`);
+      
+      // 실제 구현 시 사용할 코드:
+      // const response = await fetch(`/api/pets/${petId}`, {
+      //   method: 'DELETE',
+      // });
+      // const result = await response.json();
+      // if (result.success) {
+      //   setPets(pets.filter(pet => pet.id !== petId));
+      // }
     } catch (error) {
       console.error('펫 삭제 실패:', error);
       alert('삭제 중 오류가 발생했습니다.');

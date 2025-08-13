@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { PlusCircle, Save, ArrowLeft, Heart } from 'lucide-react';
+import { PlusCircle, Save, ArrowLeft, Heart, Upload, X } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -27,7 +27,8 @@ interface PetFormData {
 const PetRegisterPage = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
-  const [imageError, setImageError] = useState(false);
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const [previewUrl, setPreviewUrl] = useState<string>('');
   const [formData, setFormData] = useState<PetFormData>({
     name: '',
     type: '',
@@ -62,11 +63,49 @@ const PetRegisterPage = () => {
       ...prev,
       [field]: value,
     }));
-    
-    // 프로필 이미지 URL이 변경되면 에러 상태 초기화
-    if (field === 'profileImage') {
-      setImageError(false);
+  };
+
+  // 파일 선택 처리
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      // 파일 크기 체크 (5MB 제한)
+      if (file.size > 5 * 1024 * 1024) {
+        alert('파일 크기는 5MB 이하로 업로드해주세요.');
+        return;
+      }
+
+      // 이미지 파일 타입 체크
+      if (!file.type.startsWith('image/')) {
+        alert('이미지 파일만 업로드 가능합니다.');
+        return;
+      }
+
+      setSelectedFile(file);
+      
+      // 미리보기 URL 생성
+      const url = URL.createObjectURL(file);
+      setPreviewUrl(url);
     }
+  };
+
+  // 파일 제거
+  const removeFile = () => {
+    setSelectedFile(null);
+    if (previewUrl) {
+      URL.revokeObjectURL(previewUrl);
+      setPreviewUrl('');
+    }
+  };
+
+  // 이미지를 Base64로 변환
+  const fileToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result as string);
+      reader.onerror = error => reject(error);
+    });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -80,13 +119,21 @@ const PetRegisterPage = () => {
     setIsLoading(true);
 
     try {
+      let profileImageData = '';
+      
+      // 선택된 파일이 있으면 Base64로 변환
+      if (selectedFile) {
+        profileImageData = await fileToBase64(selectedFile);
+      }
+
       const submitData = {
         ...formData,
         weight: formData.weight ? parseFloat(formData.weight) : null,
         birthDate: formData.birthDate || null,
+        profileImage: profileImageData, // Base64 데이터 또는 빈 문자열
       };
 
-      console.log('전송할 데이터:', submitData); // 디버깅용
+      console.log('전송할 데이터:', { ...submitData, profileImage: profileImageData ? '[Base64 Image Data]' : '' }); // 디버깅용
 
       const response = await fetch('/api/pets', {
         method: 'POST',
@@ -114,6 +161,15 @@ const PetRegisterPage = () => {
       setIsLoading(false);
     }
   };
+
+  // 컴포넌트 언마운트 시 메모리 정리
+  React.useEffect(() => {
+    return () => {
+      if (previewUrl) {
+        URL.revokeObjectURL(previewUrl);
+      }
+    };
+  }, [previewUrl]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50">
@@ -320,50 +376,83 @@ const PetRegisterPage = () => {
                   <h3 className="text-lg font-semibold text-orange-700 border-b border-orange-200 pb-2">
                     📸 프로필 사진
                   </h3>
-                  <div className="space-y-2">
-                    <Label htmlFor="profileImage" className="text-orange-700 font-medium">
-                      프로필 이미지 URL (선택사항)
+                  
+                  {/* 파일 업로드 영역 */}
+                  <div className="space-y-4">
+                    <Label className="text-orange-700 font-medium">
+                      프로필 이미지 업로드 (선택사항)
                     </Label>
-                    <Input
-                      id="profileImage"
-                      value={formData.profileImage}
-                      onChange={(e) => handleInputChange('profileImage', e.target.value)}
-                      placeholder="https://example.com/pet-photo.jpg"
-                      className="border-orange-200 focus:border-orange-400"
-                    />
+                    
+                    {!selectedFile ? (
+                      <div className="border-2 border-dashed border-orange-200 rounded-lg p-8 text-center">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleFileChange}
+                          className="hidden"
+                          id="file-upload"
+                        />
+                        <label
+                          htmlFor="file-upload"
+                          className="cursor-pointer flex flex-col items-center space-y-2"
+                        >
+                          <Upload className="h-12 w-12 text-orange-400" />
+                          <div className="text-orange-600">
+                            <span className="font-medium">클릭하여 이미지 선택</span>
+                            <p className="text-sm text-orange-500 mt-1">
+                              JPG, PNG, GIF 파일 (최대 5MB)
+                            </p>
+                          </div>
+                        </label>
+                      </div>
+                    ) : (
+                      <div className="space-y-4">
+                        {/* 선택된 파일 정보 */}
+                        <div className="flex items-center justify-between p-3 bg-orange-50 rounded-lg border border-orange-200">
+                          <div className="flex items-center space-x-3">
+                            <div className="w-10 h-10 bg-orange-100 rounded-lg flex items-center justify-center">
+                              📷
+                            </div>
+                            <div>
+                              <p className="font-medium text-orange-800">{selectedFile.name}</p>
+                              <p className="text-sm text-orange-600">
+                                {(selectedFile.size / (1024 * 1024)).toFixed(2)} MB
+                              </p>
+                            </div>
+                          </div>
+                          <Button
+                            type="button"
+                            variant="outline"
+                            size="sm"
+                            onClick={removeFile}
+                            className="border-orange-200 text-orange-600 hover:bg-orange-50"
+                          >
+                            <X className="h-4 w-4" />
+                          </Button>
+                        </div>
+
+                        {/* 이미지 미리보기 */}
+                        {previewUrl && (
+                          <div className="flex justify-center">
+                            <div className="relative">
+                              <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-orange-200 shadow-lg relative">
+                                <Image
+                                  src={previewUrl}
+                                  alt="프로필 미리보기"
+                                  fill
+                                  className="object-cover"
+                                  sizes="128px"
+                                />
+                              </div>
+                              <div className="absolute -bottom-2 -right-2 bg-orange-500 text-white rounded-full p-1">
+                                ✓
+                              </div>
+                            </div>
+                          </div>
+                        )}
+                      </div>
+                    )}
                   </div>
-                  
-                  {/* 이미지 미리보기 - Next.js Image 컴포넌트 사용 */}
-                  {formData.profileImage && !imageError && (
-                    <div className="flex justify-center">
-                      <div className="relative">
-                        <div className="w-32 h-32 rounded-full overflow-hidden border-4 border-orange-200 shadow-lg relative">
-                          <Image
-                            src={formData.profileImage}
-                            alt="프로필 미리보기"
-                            fill
-                            className="object-cover"
-                            sizes="128px"
-                            onError={() => setImageError(true)}
-                          />
-                        </div>
-                        <div className="absolute -bottom-2 -right-2 bg-orange-500 text-white rounded-full p-1">
-                          ✓
-                        </div>
-                      </div>
-                    </div>
-                  )}
-                  
-                  {/* 이미지 로드 에러 시 표시 */}
-                  {formData.profileImage && imageError && (
-                    <div className="flex justify-center">
-                      <div className="w-32 h-32 rounded-full border-4 border-red-200 bg-red-50 flex items-center justify-center">
-                        <p className="text-red-500 text-xs text-center">
-                          이미지를 불러올 수 없습니다
-                        </p>
-                      </div>
-                    </div>
-                  )}
                 </div>
 
                 {/* 제출 버튼 */}

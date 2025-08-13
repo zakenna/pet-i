@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -29,6 +29,26 @@ import {
   Wifi
 } from 'lucide-react';
 import Link from 'next/link';
+
+// 간단한 헤더 컴포넌트 (사이드바 의존성 제거)
+const SimpleHeader = () => {
+  return (
+    <div className="bg-white/80 backdrop-blur-sm border-b border-orange-100 sticky top-0 z-50">
+      <div className="container mx-auto px-4 py-4">
+        <div className="flex items-center justify-between">
+          <Link href="/">
+            <Button variant="outline" className="border-orange-200">
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              홈으로 돌아가기
+            </Button>
+          </Link>
+          <h1 className="text-2xl font-bold text-orange-800">Pet-I™ 도움말</h1>
+          <div className="w-32"></div> {/* 공간 맞춤용 */}
+        </div>
+      </div>
+    </div>
+  );
+};
 
 // FAQ 데이터
 const faqData = [
@@ -196,6 +216,12 @@ const HelpPage = () => {
   const [searchTerm, setSearchTerm] = useState('');
   const [expandedFAQ, setExpandedFAQ] = useState<string | null>(null);
   const [activeCategory, setActiveCategory] = useState('시작하기');
+  const [isClient, setIsClient] = useState(false);
+
+  // 클라이언트 사이드에서만 실행되도록 보장
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   // FAQ 검색 필터링
   const filteredFAQ = faqData.map(category => ({
@@ -210,23 +236,25 @@ const HelpPage = () => {
     setExpandedFAQ(expandedFAQ === questionId ? null : questionId);
   };
 
-  return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50">
-      {/* 헤더 */}
-      <div className="bg-white/80 backdrop-blur-sm border-b border-orange-100 sticky top-0 z-50">
-        <div className="container mx-auto px-4 py-4">
-          <div className="flex items-center justify-between">
-            <Link href="/">
-              <Button variant="outline" className="border-orange-200">
-                <ArrowLeft className="mr-2 h-4 w-4" />
-                홈으로 돌아가기
-              </Button>
-            </Link>
-            <h1 className="text-2xl font-bold text-orange-800">Pet-I™ 도움말</h1>
-            <div className="w-32"></div> {/* 공간 맞춤용 */}
+  // 클라이언트 렌더링이 완료되기 전에는 간단한 로딩 표시
+  if (!isClient) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50">
+        <SimpleHeader />
+        <div className="flex items-center justify-center min-h-screen">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-600 mx-auto mb-4"></div>
+            <p className="text-orange-600">도움말을 불러오는 중...</p>
           </div>
         </div>
       </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-yellow-50">
+      {/* 헤더 */}
+      <SimpleHeader />
 
       <div className="container mx-auto px-4 py-8">
         {/* 소개 섹션 */}
@@ -605,8 +633,6 @@ const HelpPage = () => {
                 </div>
               </CardContent>
             </Card>
-            
-            
           </div>
         </section>
       </div>

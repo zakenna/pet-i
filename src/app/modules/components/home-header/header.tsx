@@ -73,7 +73,7 @@ const Header = () => {
                       로그인
                     </Button>
                   </SignInButton>
-                  <SignUpButton mode="modal" forceRedirectUrl="/api/register">
+                  <SignUpButton mode="modal" forceRedirectUrl="/register">
                     <Button size="sm" className="bg-blue-500 hover:bg-blue-600 text-white">
                       회원가입
                     </Button>
